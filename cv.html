@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CV — YourName</title>
+  <meta name="description" content="Curriculum Vitae of YourName — education, experience, skills, and awards." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+
+<body>
+
+  <!-- Navbar (injected by JS) -->
+  <div id="navbar-placeholder"></div>
+
+
+  <!-- =============================================================
+       PAGE HEADER
+       ============================================================= -->
+  <header class="page-header">
+    <div class="container">
+      <h1>Curriculum <span>Vitae</span></h1>
+      <p>A summary of my academic and professional journey.</p>
+    </div>
+  </header>
+
+
+  <!-- =============================================================
+       CV CONTENT — loaded from content/cv.md
+       Edit the markdown file to update this page's content.
+       ============================================================= -->
+  <section class="section">
+    <div class="container">
+      <div class="md-content" id="md-content" data-src="content/cv.md"></div>
+
+      <!-- Download CV button -->
+      <div class="cv-download fade-in">
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-md);">
+          Want a copy? Download the full CV as a PDF.
+        </p>
+        <a href="#" class="btn btn--primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Download PDF
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Footer (injected by JS) -->
+  <div id="footer-placeholder"></div>
+
+  <!-- marked.js from CDN — lightweight markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/markdown.js"></script>
+
+</body>
+
+</html>

@@ -10,8 +10,8 @@
         <div id="navbar-placeholder"></div>   (where the nav goes)
         <div id="footer-placeholder"></div>   (where the footer goes)
    2. This script fetches the HTML files and drops them in.
-   3. After injection it wires up the mobile-menu toggle and
-      sets the copyright year.
+   3. After injection it wires up the mobile-menu toggle,
+      highlights the active page link, and sets the copyright year.
 
    WHY?  You only edit navbar.html or footer.html ONCE and the
    change appears on every page that includes this script.
@@ -52,7 +52,8 @@ async function loadComponent(placeholderId, filePath) {
 /**
  * initNavbar()
  * ----------------
- * Wires up the mobile hamburger menu toggle.
+ * Wires up the mobile hamburger menu toggle and highlights
+ * the active page link based on the current URL.
  * Called after the navbar HTML has been injected.
  */
 function initNavbar() {
@@ -61,6 +62,7 @@ function initNavbar() {
 
   if (!toggle || !links) return;
 
+  // --- Mobile menu toggle ---
   toggle.addEventListener('click', () => {
     const isOpen = links.classList.toggle('open');
     toggle.classList.toggle('open');
@@ -74,6 +76,17 @@ function initNavbar() {
       toggle.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
     });
+  });
+
+  // --- Active page highlighting ---
+  // Get just the filename from the current URL (e.g. "about.html")
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+  links.querySelectorAll('a').forEach(link => {
+    const linkPage = link.getAttribute('href').split('/').pop();
+    if (linkPage === currentPage) {
+      link.classList.add('active');
+    }
   });
 }
 
