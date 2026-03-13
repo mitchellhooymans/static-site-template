@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- =============================================================
+       META & SEO
+       ============================================================= -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Page title — shown in browser tab & search results -->
+  <title>YourSite — A Modern Static Site Template</title>
+
+  <!-- Meta description — appears under the title in search results -->
+  <meta name="description" content="A clean, beginner-friendly static site template built with Vanilla HTML, CSS, and JavaScript. Perfect for academic portfolios, research groups, or project documentation." />
+
+  <!-- Open Graph tags for social sharing -->
+  <meta property="og:title" content="YourSite — A Modern Static Site Template" />
+  <meta property="og:description" content="A clean, beginner-friendly static site template for GitHub Pages." />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon (replace with your own) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
+
+  <!-- =============================================================
+       STYLESHEETS
+       ============================================================= -->
+  <!-- variables.css is imported inside main.css, so we only link main -->
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+
+<body>
+
+  <!-- =============================================================
+       NAVBAR (injected from /components/navbar.html by JS)
+       ============================================================= -->
+  <div id="navbar-placeholder"></div>
+
+
+  <!-- =============================================================
+       HERO SECTION
+       The first thing visitors see. Edit the headline, sub-headline,
+       and CTA button text below.
+       ============================================================= -->
+  <section class="hero" id="hero">
+    <div class="hero__content fade-in">
+
+      <!-- Decorative badge above the headline -->
+      <span class="hero__badge">🚀 Open-Source Template</span>
+
+      <!-- Main headline — wrap a keyword in <span> for gradient text -->
+      <h1 class="hero__title">
+        Build Something <span>Amazing</span>
+      </h1>
+
+      <!-- Sub-headline — briefly explain what the site is for -->
+      <p class="hero__subtitle">
+        A clean, modern static-site skeleton designed for GitHub&nbsp;Pages.
+        Perfect for academic portfolios, research groups, or project&nbsp;docs.
+      </p>
+
+      <!-- Call-to-Action buttons -->
+      <div class="hero__actions">
+        <a href="#highlights" class="btn btn--primary">Explore Features</a>
+        <a href="https://github.com" target="_blank" rel="noopener" class="btn btn--outline">
+          <!-- GitHub icon (inline SVG) -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          </svg>
+          View on GitHub
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =============================================================
+       HIGHLIGHTS / FEATURES SECTION
+       A modular 3-column grid. Duplicate a .highlight-card block
+       to add more items. Great for publications, toolkits, or
+       research highlights.
+       ============================================================= -->
+  <section class="highlights section" id="highlights">
+    <div class="container">
+
+      <!-- Section header -->
+      <div class="highlights__header fade-in">
+        <h2>Key Highlights</h2>
+        <p>Everything you need to get started — no build tools, no frameworks, just clean code.</p>
+      </div>
+
+      <!-- 3-column grid of cards -->
+      <div class="highlights__grid">
+
+        <!-- Card 1 ------------------------------------------------ -->
+        <div class="highlight-card fade-in">
+          <div class="highlight-card__icon">
+            <!-- Lightning bolt icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+          </div>
+          <h3>Lightning Fast</h3>
+          <p>
+            Pure HTML, CSS, and JavaScript — no build step, no dependencies.
+            Open <code>index.html</code> and you're live.
+          </p>
+        </div>
+
+        <!-- Card 2 ------------------------------------------------ -->
+        <div class="highlight-card fade-in">
+          <div class="highlight-card__icon">
+            <!-- Palette icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="13.5" cy="6.5" r="2.5" />
+              <circle cx="17.5" cy="10.5" r="2.5" />
+              <circle cx="8.5" cy="7.5" r="2.5" />
+              <circle cx="6.5" cy="12.5" r="2.5" />
+              <path d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10c.55 0 1-.45 1-1v-1.5c0-.28.22-.5.5-.5h1c2.76 0 5-2.24 5-5 0-5.51-4.49-10-10-10z" />
+            </svg>
+          </div>
+          <h3>Easy Theming</h3>
+          <p>
+            Change colours, fonts, and spacing in one file —
+            <code>variables.css</code>. The entire site updates instantly.
+          </p>
+        </div>
+
+        <!-- Card 3 ------------------------------------------------ -->
+        <div class="highlight-card fade-in">
+          <div class="highlight-card__icon">
+            <!-- Puzzle / component icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+          </div>
+          <h3>Reusable Components</h3>
+          <p>
+            The navbar and footer live in separate files. Edit once,
+            and every page updates — powered by a tiny JS loader.
+          </p>
+        </div>
+
+      </div><!-- /.highlights__grid -->
+    </div><!-- /.container -->
+  </section>
+
+
+  <!-- =============================================================
+       ABOUT SECTION
+       Profile image + bio. Replace the placeholder image and text
+       with your own content.
+       ============================================================= -->
+  <section class="about section" id="about">
+    <div class="container">
+      <div class="about__inner fade-in">
+
+        <!-- Profile image placeholder (using an inline SVG) -->
+        <div class="about__image-wrapper">
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' fill='%231e293b'%3E%3Crect width='260' height='260' rx='16'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-size='14' fill='%2394a3b8'%3EYour Photo%3C/text%3E%3C/svg%3E"
+            alt="Profile photo placeholder"
+            width="260"
+            height="260"
+          />
+        </div>
+
+        <!-- Bio text -->
+        <div class="about__text">
+          <h2>About Me</h2>
+          <p>
+            Hello! I'm a researcher / developer / student passionate about
+            <strong>your field here</strong>. This is a great place to introduce
+            yourself, your lab, or your project.
+          </p>
+          <p>
+            Replace this placeholder text with a few paragraphs about your work,
+            your interests, or your team. You can also add links to your
+            publications, CV, or social&nbsp;profiles.
+          </p>
+          <a href="#" class="btn btn--primary" style="margin-top: var(--space-md);">
+            Read More →
+          </a>
+        </div>
+
+      </div><!-- /.about__inner -->
+    </div><!-- /.container -->
+  </section>
+
+
+  <!-- =============================================================
+       FOOTER (injected from /components/footer.html by JS)
+       ============================================================= -->
+  <div id="footer-placeholder"></div>
+
+
+  <!-- =============================================================
+       SCRIPTS
+       components.js must load first (it injects the navbar/footer).
+       main.js handles scroll animations and nav highlighting.
+       ============================================================= -->
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,515 @@
+/* =============================================================
+   MAIN.CSS — Global Styles & Component Styling
+   =============================================================
+   This file imports variables.css and builds every style on top
+   of those design tokens.  Edit variables.css first if you just
+   want to change colours or fonts.
+   ============================================================= */
+
+@import url('./variables.css');
+
+/* Import Google Font — matches --font-family in variables.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+
+/* =============================================================
+   1. RESET & BASE
+   ============================================================= */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;            /* Smooth anchor scrolling */
+  scroll-padding-top: var(--navbar-height);  /* Offset for fixed nav */
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-primary-light);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+a:hover { color: var(--color-primary); }
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+ul, ol { list-style: none; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+
+/* =============================================================
+   2. LAYOUT UTILITIES
+   ============================================================= */
+
+/* Centred content wrapper (used inside every section) */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;                /* centre horizontally */
+  padding-inline: var(--space-lg);    /* side gutters */
+}
+
+/* Generic full-width section with vertical padding */
+.section {
+  padding-block: var(--space-3xl);
+}
+
+/* Utility: visually hidden but accessible to screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+
+/* =============================================================
+   3. NAVBAR
+   ============================================================= */
+
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.85);     /* semi-transparent bg */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --- Logo / brand --- */
+.navbar__brand {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  letter-spacing: -0.025em;
+}
+.navbar__brand span {
+  color: var(--color-primary);        /* Highlight first word */
+}
+
+/* --- Desktop nav links --- */
+.navbar__links {
+  display: flex;
+  gap: var(--space-lg);
+}
+.navbar__links a {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+  position: relative;
+}
+.navbar__links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  background: var(--color-primary);
+  transition: width var(--transition-base);
+}
+.navbar__links a:hover,
+.navbar__links a.active {
+  color: var(--color-text);
+}
+.navbar__links a:hover::after,
+.navbar__links a.active::after {
+  width: 100%;
+}
+
+/* --- Hamburger button (hidden on desktop) --- */
+.navbar__toggle {
+  display: none;                       /* shown via media query */
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 28px; height: 28px;
+  padding: 0;
+}
+.navbar__toggle span {
+  display: block;
+  width: 100%; height: 2px;
+  background: var(--color-text);
+  border-radius: 2px;
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+/* Hamburger → X animation */
+.navbar__toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.navbar__toggle.open span:nth-child(2) { opacity: 0; }
+.navbar__toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+
+/* =============================================================
+   4. HERO SECTION
+   ============================================================= */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+  padding-top: var(--navbar-height);
+  overflow: hidden;
+
+  /* Gradient background — customise colours in variables.css */
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, rgba(245, 158, 11, 0.10) 0%, transparent 60%),
+    var(--color-bg);
+}
+
+.hero__content {
+  max-width: 720px;
+  padding: var(--space-xl);
+}
+
+/* Decorative pill badge above headline */
+.hero__badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--color-primary-light);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  margin-bottom: var(--space-lg);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+.hero__title {
+  font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-lg);
+}
+.hero__title span {
+  /* Gradient text on the highlighted word */
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero__subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  max-width: 540px;
+  margin-inline: auto;
+  margin-bottom: var(--space-xl);
+}
+
+/* CTA button group */
+.hero__actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+
+/* =============================================================
+   5. BUTTONS
+   ============================================================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  transition: all var(--transition-base);
+}
+
+/* Filled primary button */
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+.btn--primary:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.45);
+  color: var(--color-text-on-primary);
+}
+
+/* Outlined / ghost secondary button */
+.btn--outline {
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  background: transparent;
+}
+.btn--outline:hover {
+  background: var(--color-surface);
+  border-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+
+/* =============================================================
+   6. HIGHLIGHTS / FEATURES GRID
+   ============================================================= */
+
+.highlights {
+  background: var(--color-bg);
+}
+
+.highlights__header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+.highlights__header h2 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-sm);
+}
+.highlights__header p {
+  color: var(--color-text-muted);
+  max-width: 540px;
+  margin-inline: auto;
+}
+
+/* 3-column responsive grid */
+.highlights__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* Individual card */
+.highlight-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+.highlight-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
+}
+
+.highlight-card__icon {
+  width: 48px; height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+.highlight-card__icon svg {
+  width: 24px; height: 24px;
+}
+
+.highlight-card h3 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--space-sm);
+}
+.highlight-card p {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+
+/* =============================================================
+   7. ABOUT SECTION
+   ============================================================= */
+
+.about {
+  background: var(--color-surface);
+}
+
+.about__inner {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+.about__image-wrapper {
+  position: relative;
+}
+.about__image-wrapper img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--color-border);
+}
+/* Decorative ring behind image */
+.about__image-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--color-primary);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.about__text h2 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-md);
+}
+.about__text p {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+.about__text p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* =============================================================
+   8. FOOTER
+   ============================================================= */
+
+.footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding-block: var(--space-2xl);
+}
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.footer__brand {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+}
+.footer__brand span {
+  color: var(--color-primary);
+}
+
+.footer__links {
+  display: flex;
+  gap: var(--space-lg);
+}
+.footer__links a {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.footer__links a:hover {
+  color: var(--color-text);
+}
+
+.footer__copy {
+  width: 100%;
+  text-align: center;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+
+/* =============================================================
+   9. SCROLL ANIMATIONS
+   Elements with .fade-in start invisible and animate in when
+   they enter the viewport (driven by IntersectionObserver in main.js).
+   ============================================================= */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* =============================================================
+   10. RESPONSIVE — MOBILE (≤ 768 px)
+   ============================================================= */
+
+@media (max-width: 768px) {
+
+  /* Show hamburger, hide desktop links */
+  .navbar__toggle { display: flex; }
+
+  .navbar__links {
+    /* Off-canvas mobile menu */
+    position: fixed;
+    top: var(--navbar-height);
+    left: 0; right: 0;
+    bottom: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xl);
+    background: var(--color-bg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base);
+  }
+  .navbar__links.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .navbar__links a {
+    font-size: var(--text-xl);
+  }
+
+  /* About section stacks on mobile */
+  .about__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .about__image-wrapper {
+    max-width: 200px;
+    margin-inline: auto;
+  }
+}
