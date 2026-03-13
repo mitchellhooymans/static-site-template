@@ -8,7 +8,7 @@
   <a href="#-hosting-on-github-pages-free-deployment">Deployment</a>
 
   <br><br>
-  <img src="https://via.placeholder.com/800x400?text=Academic+Portfolio+Template" alt="Template Preview" />
+  ![Preview](assets/images/Preview.png) 
 </div>
 
 ---
