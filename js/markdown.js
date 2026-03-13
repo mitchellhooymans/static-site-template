@@ -8,6 +8,9 @@
    After injection, it wraps each entry (h2 + following paragraphs)
    inside a .md-card <div> for clean card-based styling.
 
+   For CV pages, each # section becomes its own self-contained
+   timeline segment wrapped in a .cv-section <div>.
+
    USAGE:
    1. Add a <div class="md-content" id="md-content" data-src="content/file.md"></div>
    2. Include the marked.js CDN script before this file.
@@ -51,15 +54,23 @@ async function loadMarkdown(elementId) {
       throw new Error('marked.js library not loaded. Add the CDN script.');
     }
 
-    // Parse markdown → HTML and inject
+    // Parse markdown -> HTML and inject
     container.innerHTML = marked.parse(mdText);
 
-    // Wrap entries in card divs for styling
-    wrapEntriesInCards(container);
+    // Check if this is a CV timeline page
+    const isTimeline = container.parentElement &&
+                       container.parentElement.classList.contains('cv-timeline');
 
-    // Re-run scroll animations for new elements
-    if (typeof initScrollAnimations === 'function') {
-      initScrollAnimations();
+    if (isTimeline) {
+      // Wrap entries into self-contained sections
+      wrapEntriesInSections(container);
+      observeTimelineNodes(container);
+    } else {
+      // Standard card wrapping for other pages
+      wrapEntriesInCards(container);
+      if (typeof initScrollAnimations === 'function') {
+        initScrollAnimations();
+      }
     }
 
   } catch (error) {
@@ -79,28 +90,6 @@ async function loadMarkdown(elementId) {
  * Groups are delimited by <hr> elements (--- in markdown).
  * <h1> section headings are left outside cards and get a
  * .fade-in class directly.
- *
- * Before:
- *   <h1>Education</h1>
- *   <h2>PhD ...</h2>
- *   <p>Details...</p>
- *   <p>More...</p>
- *   <hr>
- *   <h2>BSc ...</h2>
- *   <p>Details...</p>
- *   <hr>
- *
- * After:
- *   <h1 class="fade-in">Education</h1>
- *   <div class="md-card fade-in">
- *     <h2>PhD ...</h2>
- *     <p>Details...</p>
- *     <p>More...</p>
- *   </div>
- *   <div class="md-card fade-in">
- *     <h2>BSc ...</h2>
- *     <p>Details...</p>
- *   </div>
  */
 function wrapEntriesInCards(container) {
   const children = Array.from(container.children);
@@ -131,7 +120,7 @@ function wrapEntriesInCards(container) {
       currentCard.appendChild(child);
 
     } else if (tag === 'HR') {
-      // <hr> = entry separator → close the current card
+      // <hr> = entry separator -> close the current card
       if (currentCard) {
         fragment.appendChild(currentCard);
         currentCard = null;
@@ -148,7 +137,7 @@ function wrapEntriesInCards(container) {
       fragment.appendChild(child);
 
     } else {
-      // Paragraphs and other elements → add to current card
+      // Paragraphs and other elements -> add to current card
       if (currentCard) {
         currentCard.appendChild(child);
       } else {
@@ -166,6 +155,144 @@ function wrapEntriesInCards(container) {
   // Replace container contents with the restructured DOM
   container.innerHTML = '';
   container.appendChild(fragment);
+}
+
+
+/**
+ * wrapEntriesInSections()
+ * ----------------
+ * For CV timeline pages: wraps each # section and its child cards
+ * into a self-contained <div class="cv-section"> wrapper.
+ * Each section (Education, Experience, Awards, etc.) becomes its
+ * own independent timeline segment with its own track line.
+ *
+ * Structure after wrapping:
+ *   <div class="cv-section">
+ *     <h1>Education</h1>
+ *     <div class="md-card">...</div>
+ *     <div class="md-card">...</div>
+ *   </div>
+ *   <div class="cv-section">
+ *     <h1>Experience</h1>
+ *     <div class="md-card">...</div>
+ *   </div>
+ */
+function wrapEntriesInSections(container) {
+  const children = Array.from(container.children);
+  const fragment = document.createDocumentFragment();
+  let currentSection = null;
+  let currentCard = null;
+
+  children.forEach(child => {
+    const tag = child.tagName;
+
+    if (tag === 'H1') {
+      // Close any open card
+      if (currentCard) {
+        if (currentSection) currentSection.appendChild(currentCard);
+        currentCard = null;
+      }
+      // Close any open section
+      if (currentSection) {
+        fragment.appendChild(currentSection);
+      }
+      // Start a new section
+      currentSection = document.createElement('div');
+      currentSection.className = 'cv-section';
+      currentSection.appendChild(child);
+
+    } else if (tag === 'H2') {
+      // Close previous card if open
+      if (currentCard) {
+        if (currentSection) currentSection.appendChild(currentCard);
+        else fragment.appendChild(currentCard);
+      }
+      // Start a new card
+      currentCard = document.createElement('div');
+      currentCard.className = 'md-card';
+      currentCard.appendChild(child);
+
+    } else if (tag === 'HR') {
+      // Close the current card
+      if (currentCard) {
+        if (currentSection) currentSection.appendChild(currentCard);
+        else fragment.appendChild(currentCard);
+        currentCard = null;
+      }
+
+    } else if (tag === 'UL' || tag === 'OL') {
+      // Close any open card
+      if (currentCard) {
+        if (currentSection) currentSection.appendChild(currentCard);
+        else fragment.appendChild(currentCard);
+        currentCard = null;
+      }
+      // Append list directly to current section
+      if (currentSection) {
+        currentSection.appendChild(child);
+      } else {
+        fragment.appendChild(child);
+      }
+
+    } else {
+      // Paragraphs — add to current card
+      if (currentCard) {
+        currentCard.appendChild(child);
+      } else if (currentSection) {
+        currentSection.appendChild(child);
+      } else {
+        fragment.appendChild(child);
+      }
+    }
+  });
+
+  // Close remaining card and section
+  if (currentCard) {
+    if (currentSection) currentSection.appendChild(currentCard);
+    else fragment.appendChild(currentCard);
+  }
+  if (currentSection) {
+    fragment.appendChild(currentSection);
+  }
+
+  // Replace container contents
+  container.innerHTML = '';
+  container.appendChild(fragment);
+}
+
+
+/**
+ * observeTimelineNodes()
+ * ----------------
+ * Uses IntersectionObserver to trigger 'in-view' classes on 
+ * timeline cards and lists as they scroll into view.
+ * Also marks parent cv-section as 'section-active' to trigger
+ * the track line glow effect.
+ */
+function observeTimelineNodes(container) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+
+        // Mark the parent section as active for track glow
+        const section = entry.target.closest('.cv-section');
+        if (section) {
+          section.classList.add('section-active');
+        }
+      }
+    });
+  }, {
+    root: null,
+    rootMargin: '0px 0px -10% 0px',
+    threshold: 0.1
+  });
+
+  const cards = container.querySelectorAll('.md-card');
+  const lists = container.querySelectorAll('ul, ol');
+
+  cards.forEach(card => observer.observe(card));
+  lists.forEach(list => observer.observe(list));
 }
 
 

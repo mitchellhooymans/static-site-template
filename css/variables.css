@@ -1,47 +1,64 @@
 /* =============================================================
-   VARIABLES.CSS — Global Design Tokens
+   VARIABLES.CSS — Global Design Tokens (Modern Science Theme)
    =============================================================
    This is your THEMING CONTROL CENTER.
    Change values here to instantly update the look of your entire site.
-   No need to dig through other CSS files!
    ============================================================= */
 
 :root {
 
   /* -----------------------------------------------------------
-     🎨 COLORS
-     Change these hex values to rebrand your entire site.
+     COLORS: Deep Science Dark Mode
      ----------------------------------------------------------- */
 
-  /* Primary brand color — used for buttons, links, accents */
-  --color-primary: #6366f1;          /* Indigo */
-  --color-primary-hover: #4f46e5;    /* Darker on hover */
-  --color-primary-light: #a5b4fc;    /* Soft tint for backgrounds */
+  /* Primary brand color — High-contrast Teal (Laboratory precision) */
+  --color-primary: #14b8a6;          /* Teal 500 */
+  --color-primary-hover: #0d9488;    /* Teal 600 */
+  --color-primary-light: #5eead4;    /* Teal 300 */
+  
+  /* Accent color — Deep Indigo (Astronomy, deep space) */
+  --color-accent: #6366f1;           /* Indigo 500 */
+  --color-accent-hover: #4f46e5;
 
-  /* Accent color — used sparingly for highlights & badges */
-  --color-accent: #f59e0b;           /* Amber */
-  --color-accent-hover: #d97706;
+  /* Backgrounds — Ultra deep slate for immersive tech feel */
+  --color-bg: #020617;               /* Slate 950 (near black) */
+  --color-surface: #0f172a;          /* Slate 900 */
+  --color-surface-hover: #1e293b;    /* Slate 800 */
+  
+  /* Universal transparent colors for gradients, shadows, and glassmorphism */
+  --color-surface-glass: rgba(15, 23, 42, 0.75);
+  
+  --color-primary-alpha-10: rgba(20, 184, 166, 0.10);
+  --color-primary-alpha-15: rgba(20, 184, 166, 0.15);
+  --color-primary-alpha-20: rgba(20, 184, 166, 0.20);
+  --color-primary-alpha-25: rgba(20, 184, 166, 0.25);
+  --color-primary-alpha-30: rgba(20, 184, 166, 0.30);
+  --color-primary-alpha-40: rgba(20, 184, 166, 0.40);
+  
+  --color-accent-alpha-10: rgba(99, 102, 241, 0.10);
 
-  /* Backgrounds */
-  --color-bg: #0f172a;               /* Deep navy — main page background */
-  --color-surface: #1e293b;          /* Slightly lighter — cards, nav */
-  --color-surface-hover: #334155;    /* Card / surface hover state */
-
-  /* Text */
-  --color-text: #f1f5f9;             /* Near-white — primary body text */
-  --color-text-muted: #94a3b8;       /* Grey — secondary / helper text */
-  --color-text-on-primary: #ffffff;  /* Text placed on primary-colored bg */
+  /* Text — High contrast off-whites */
+  --color-text: #f8fafc;             /* Bright slate off-white */
+  --color-text-muted: #94a3b8;       /* Slate 400 */
+  --color-text-on-primary: #ffffff;  
 
   /* Borders & Dividers */
-  --color-border: rgba(148, 163, 184, 0.15);
+  --color-border: rgba(148, 163, 184, 0.15); /* Faint slate border */
 
 
   /* -----------------------------------------------------------
-     🔤 TYPOGRAPHY
-     Swap the font-family to use a different Google Font.
+     TYPOGRAPHY
+     Three-font system for visual hierarchy.
      ----------------------------------------------------------- */
 
+  /* Syne — Geometric, bold display headings */
+  --font-heading: 'Syne', system-ui, -apple-system, sans-serif;
+
+  /* Inter — Clean, highly legible body text */
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* JetBrains Mono — Technical metadata, tags, code */
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Font sizes (rem) – relative to 16 px base */
   --text-xs:   0.75rem;   /* 12px */
@@ -59,6 +76,7 @@
   --font-medium: 500;
   --font-semibold: 600;
   --font-bold: 700;
+  --font-extrabold: 800;
 
   /* Line heights */
   --leading-tight: 1.25;
@@ -66,7 +84,7 @@
 
 
   /* -----------------------------------------------------------
-     📐 SPACING SCALE
+     SPACING SCALE
      Used for padding, margin, and gaps.
      ----------------------------------------------------------- */
 
@@ -80,7 +98,7 @@
 
 
   /* -----------------------------------------------------------
-     📦 BORDERS & SHADOWS
+     BORDERS & SHADOWS
      ----------------------------------------------------------- */
 
   --radius-sm: 0.375rem;  /* 6px — small elements */
@@ -91,11 +109,12 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --shadow-glow: 0 10px 30px -10px var(--color-primary-alpha-30);
+  --shadow-glow-intense: 0 20px 60px -15px var(--color-primary-alpha-40);
 
 
   /* -----------------------------------------------------------
-     🎞️ TRANSITIONS
-     Default easing / duration for hover effects & animations.
+     TRANSITIONS
      ----------------------------------------------------------- */
 
   --transition-fast: 150ms ease;
@@ -104,8 +123,7 @@
 
 
   /* -----------------------------------------------------------
-     📏 LAYOUT
-     Max content width and the navbar height.
+     LAYOUT
      ----------------------------------------------------------- */
 
   --max-width: 1200px;

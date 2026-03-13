@@ -8,8 +8,8 @@
 
 @import url('./variables.css');
 
-/* Import Google Font — matches --font-family in variables.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Import Google Fonts — Syne (headings), Inter (body), JetBrains Mono (code/tags) */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 
 /* =============================================================
@@ -100,7 +100,7 @@ button {
   height: var(--navbar-height);
   display: flex;
   align-items: center;
-  background: rgba(15, 23, 42, 0.85);
+  background: var(--color-surface-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
@@ -113,6 +113,7 @@ button {
 }
 
 .navbar__brand {
+  font-family: var(--font-heading);
   font-size: var(--text-xl);
   font-weight: var(--font-bold);
   color: var(--color-text);
@@ -187,14 +188,14 @@ button {
 
 .btn--primary {
   background: var(--color-primary);
-  color: var(--color-text-on-primary);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  color: var(--color-bg);
+  box-shadow: 0 0 20px var(--color-primary-alpha-20);
 }
 .btn--primary:hover {
-  background: var(--color-primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(99, 102, 241, 0.45);
-  color: var(--color-text-on-primary);
+  background: var(--color-primary-light);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 30px var(--color-primary-alpha-30);
+  color: var(--color-bg);
 }
 
 .btn--outline {
@@ -220,13 +221,33 @@ button {
   min-height: 100vh;
   padding-top: var(--navbar-height);
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 50%, rgba(245, 158, 11, 0.10) 0%, transparent 60%),
-    var(--color-bg);
+  background-color: var(--color-bg);
+}
+
+/* Animated SVG constellation background */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: -100px;
+  background-image: 
+    radial-gradient(circle at 20% 30%, var(--color-primary-alpha-10) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, var(--color-accent-alpha-10) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Ccircle cx='4' cy='4' r='1' fill='%2314b8a6' fill-opacity='0.12'/%3E%3Ccircle cx='40' cy='40' r='0.8' fill='%2314b8a6' fill-opacity='0.08'/%3E%3Ccircle cx='76' cy='12' r='0.6' fill='%236366f1' fill-opacity='0.1'/%3E%3Ccircle cx='20' cy='60' r='0.5' fill='%236366f1' fill-opacity='0.08'/%3E%3Cpath d='M4 4L40 40' stroke='%2314b8a6' stroke-opacity='0.04' stroke-width='0.5'/%3E%3Cpath d='M40 40L76 12' stroke='%236366f1' stroke-opacity='0.03' stroke-width='0.5'/%3E%3Cpath d='M20 60L40 40' stroke='%2314b8a6' stroke-opacity='0.03' stroke-width='0.5'/%3E%3C/g%3E%3C/svg%3E");
+  z-index: 0;
+  animation: drift 80s linear infinite;
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(1.5%, 1%); }
+  50% { transform: translate(2%, 2%); }
+  75% { transform: translate(0.5%, 1.5%); }
+  100% { transform: translate(0, 0); }
 }
 
 .hero__inner {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-3xl);
@@ -237,29 +258,42 @@ button {
   max-width: 560px;
 }
 
+/* Hero decorative SVG — geometric circuit element */
+.hero__decorative-svg {
+  position: absolute;
+  top: -60px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  opacity: 0.06;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .hero__badge {
   display: inline-block;
   padding: var(--space-xs) var(--space-md);
   border-radius: var(--radius-full);
-  background: rgba(99, 102, 241, 0.15);
+  background: var(--color-primary-alpha-10);
   color: var(--color-primary-light);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
   margin-bottom: var(--space-lg);
-  border: 1px solid rgba(99, 102, 241, 0.25);
+  border: 1px solid var(--color-primary-alpha-25);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .hero__title {
+  font-family: var(--font-heading);
   font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
-  font-weight: var(--font-bold);
+  font-weight: var(--font-extrabold);
   line-height: var(--leading-tight);
   margin-bottom: var(--space-sm);
+  letter-spacing: -0.02em;
 }
 .hero__title span {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--color-primary);
 }
 
 .hero__role {
@@ -294,8 +328,14 @@ button {
   aspect-ratio: 3 / 4;
   object-fit: cover;
   border-radius: var(--radius-lg);
-  border: 3px solid var(--color-border);
+  border: 2px solid var(--color-border);
   box-shadow: var(--shadow-lg);
+  transition: all var(--transition-slow);
+}
+.hero__photo-wrapper img:hover {
+  border-color: var(--color-primary-alpha-30);
+  box-shadow: var(--shadow-glow-intense);
+  transform: translateY(-4px);
 }
 /* Decorative glow behind photo */
 .hero__photo-wrapper::before {
@@ -303,7 +343,7 @@ button {
   position: absolute;
   width: 350px; height: 350px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--color-primary-alpha-15) 0%, transparent 70%);
   z-index: -1;
 }
 
@@ -317,20 +357,19 @@ button {
   padding-bottom: var(--space-2xl);
   text-align: center;
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 0%, var(--color-primary-alpha-10) 0%, transparent 60%),
     var(--color-bg);
 }
 
 .page-header h1 {
+  font-family: var(--font-heading);
   font-size: var(--text-4xl);
-  font-weight: var(--font-bold);
+  font-weight: var(--font-extrabold);
   margin-bottom: var(--space-sm);
+  letter-spacing: -0.02em;
 }
 .page-header h1 span {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--color-primary);
 }
 
 .page-header p {
@@ -373,6 +412,7 @@ button {
 }
 
 .about__body h2 {
+  font-family: var(--font-heading);
   font-size: var(--text-2xl);
   font-weight: var(--font-bold);
   margin-bottom: var(--space-md);
@@ -392,11 +432,17 @@ button {
 .about__interests .tag {
   padding: var(--space-xs) var(--space-md);
   border-radius: var(--radius-full);
-  background: rgba(99, 102, 241, 0.12);
+  background: var(--color-primary-alpha-10);
   color: var(--color-primary-light);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  border: 1px solid var(--color-primary-alpha-20);
+  transition: all var(--transition-base);
+}
+.about__interests .tag:hover {
+  background: var(--color-primary-alpha-20);
+  border-color: var(--color-primary-alpha-30);
+  transform: translateY(-2px);
 }
 
 /* Education cards on about page */
@@ -404,27 +450,29 @@ button {
   margin-top: var(--space-2xl);
 }
 .about__education h2 {
+  font-family: var(--font-heading);
   font-size: var(--text-2xl);
   font-weight: var(--font-bold);
   margin-bottom: var(--space-lg);
 }
 
 .edu-card {
-  background: rgba(30, 41, 59, 0.7);
+  background: var(--color-surface-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-lg);
   margin-bottom: var(--space-md);
-  transition: all var(--transition-base);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .edu-card:hover {
   border-color: var(--color-primary);
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.3);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-glow-intense);
 }
 .edu-card h3 {
+  font-family: var(--font-heading);
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
   margin-bottom: var(--space-xs);
@@ -462,19 +510,19 @@ button {
 }
 
 .contact-card {
-  background: rgba(30, 41, 59, 0.7);
+  background: var(--color-surface-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-xl);
   text-align: center;
-  transition: all var(--transition-base);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .contact-card:hover {
   border-color: var(--color-primary);
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.3);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-glow-intense);
 }
 
 .contact-card__icon {
@@ -483,15 +531,21 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(99, 102, 241, 0.12);
+  background: var(--color-primary-alpha-10);
   color: var(--color-primary);
   margin: 0 auto var(--space-md);
+  transition: all var(--transition-base);
+}
+.contact-card:hover .contact-card__icon {
+  background: var(--color-primary-alpha-20);
+  box-shadow: 0 0 20px var(--color-primary-alpha-20);
 }
 .contact-card__icon svg {
   width: 24px; height: 24px;
 }
 
 .contact-card h3 {
+  font-family: var(--font-heading);
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
   margin-bottom: var(--space-sm);
@@ -523,14 +577,14 @@ button {
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
   color: var(--color-text-muted);
-  transition: all var(--transition-base);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .social-link:hover {
   border-color: var(--color-primary);
   color: var(--color-text);
   background: var(--color-surface);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 25px var(--color-primary-alpha-20);
 }
 .social-link svg {
   width: 18px; height: 18px;
@@ -582,26 +636,19 @@ button {
 
 /* =============================================================
    12. MARKDOWN CONTENT — Styles for rendered .md files
-   
-   markdown.js wraps each entry (## heading + paragraphs) in a
-   <div class="md-card">, so we style cards here, not siblings.
-   
-   Convention:
-     # Section   → <h1> — section heading
-     ## Entry    → <h2> inside .md-card — entry title
-     **Bold**    → institution / author names
-     *Italic*    → dates, venues
-     [Link](url) → DOI, arXiv, PDF badges
-     - Item      → skill lists (standalone, not inside cards)
    ============================================================= */
 
-/* --- Section headings (# → h1) --- */
+/* --- Section headings (# -> h1) --- */
 .md-content h1 {
+  font-family: var(--font-heading);
   font-size: var(--text-2xl);
   font-weight: var(--font-bold);
   color: var(--color-text);
   margin-top: var(--space-2xl);
   margin-bottom: var(--space-md);
+  position: relative;
+  display: inline-block;
+  letter-spacing: -0.01em;
 }
 .md-content h1::after {
   content: '';
@@ -609,7 +656,7 @@ button {
   width: 48px; height: 3px;
   margin-top: var(--space-sm);
   border-radius: 2px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  background: var(--color-primary);
 }
 .md-content h1:first-child {
   margin-top: 0;
@@ -617,23 +664,24 @@ button {
 
 /* --- Entry cards (wrapped by JS) --- */
 .md-card {
-  background: rgba(30, 41, 59, 0.7);
+  background: var(--color-surface-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-lg);
   margin-bottom: var(--space-md);
-  transition: all var(--transition-base);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .md-card:hover {
   border-color: var(--color-primary);
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.3);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-glow-intense);
 }
 
 /* Entry title */
 .md-card h2 {
+  font-family: var(--font-heading);
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
   color: var(--color-text);
@@ -661,17 +709,19 @@ button {
 /* Italic = dates, journal venues */
 .md-card p em {
   color: var(--color-primary-light);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
 }
 
 /* --- Link badges (DOI, arXiv, PDF, Code) --- */
 .md-card a {
+  font-family: var(--font-mono);
   font-size: var(--text-xs);
-  font-weight: var(--font-semibold);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--color-primary-light);
   padding: 3px var(--space-sm);
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  border: 1px solid var(--color-primary-alpha-30);
   border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
   text-decoration: none;
@@ -689,7 +739,7 @@ button {
 /* --- Skill lists (standalone, not inside cards) --- */
 .md-content ul {
   list-style: none;
-  background: rgba(30, 41, 59, 0.7);
+  background: var(--color-surface-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--color-border);
@@ -710,12 +760,15 @@ button {
   padding-bottom: 0;
 }
 .md-content ul li::before {
-  content: '›';
+  content: '';
   position: absolute;
   left: var(--space-sm);
-  color: var(--color-primary);
-  font-weight: var(--font-bold);
-  font-size: var(--text-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
 }
 .md-content ul li strong {
   color: var(--color-primary-light);
@@ -728,6 +781,106 @@ button {
   padding: var(--space-2xl) 0;
   margin-top: var(--space-lg);
   border-top: 1px solid var(--color-border);
+}
+
+
+/* =============================================================
+   12A. CV TIMELINE — Self-Contained Sections with Scroll Glow
+   ============================================================= */
+
+/* Each cv-section is a self-contained timeline segment */
+.cv-section {
+  position: relative;
+  padding-left: var(--space-2xl);
+  margin-bottom: var(--space-xl);
+}
+
+/* Section heading inside cv-section */
+.cv-section > h1 {
+  margin-left: calc(-1 * var(--space-2xl));
+  padding-left: 0;
+  margin-bottom: var(--space-lg);
+}
+
+/* The vertical track for each section */
+.cv-section::before {
+  content: '';
+  position: absolute;
+  top: 3.5rem;
+  bottom: var(--space-md);
+  left: 14px;
+  width: 2px;
+  background: rgba(148, 163, 184, 0.15);
+  z-index: 0;
+  transition: background 0.6s ease;
+}
+
+/* Glow the track when section has scrolled nodes */
+.cv-section.section-active::before {
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary-alpha-40),
+    var(--color-primary-alpha-15),
+    rgba(148, 163, 184, 0.15)
+  );
+}
+
+/* Style cards as timeline nodes */
+.cv-section .md-card {
+  position: relative;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Timeline dot */
+.cv-section .md-card::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--space-2xl) + 10px);
+  top: var(--space-xl);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 2px solid rgba(148, 163, 184, 0.3);
+  z-index: 1;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Revealed state (triggered by JS observer) */
+.cv-section .md-card.in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.cv-section .md-card.in-view::before {
+  background: var(--color-primary);
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 12px var(--color-primary-alpha-30), 0 0 30px var(--color-primary-alpha-15);
+}
+
+.cv-section .md-card:hover::before {
+  transform: scale(1.4);
+  box-shadow: 0 0 20px var(--color-primary-alpha-40);
+}
+
+/* Skill lists inside cv-section */
+.cv-section .md-content ul,
+.cv-section ul {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+.cv-section .md-content ul.in-view,
+.cv-section ul.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Legacy cv-timeline support (fallback) */
+.cv-timeline .md-content {
+  position: relative;
 }
 
 
@@ -747,7 +900,7 @@ button {
 
 
 /* =============================================================
-   13. RESPONSIVE — MOBILE (≤ 768 px)
+   14. RESPONSIVE — MOBILE (max 768px)
    ============================================================= */
 
 @media (max-width: 768px) {
@@ -798,5 +951,21 @@ button {
   /* Contact page */
   .contact__grid {
     grid-template-columns: 1fr;
+  }
+
+  /* CV Timeline — reduce left padding on mobile */
+  .cv-section {
+    padding-left: var(--space-xl);
+  }
+  .cv-section > h1 {
+    margin-left: calc(-1 * var(--space-xl));
+  }
+  .cv-section .md-card::before {
+    left: calc(-1 * var(--space-xl) + 8px);
+    width: 8px;
+    height: 8px;
+  }
+  .cv-section::before {
+    left: 11px;
   }
 }
