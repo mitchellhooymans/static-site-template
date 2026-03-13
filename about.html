@@ -45,41 +45,28 @@
         </div>
 
         <!-- Bio -->
-        <div class="about__body">
-          <h2>Who I Am</h2>
-          <p>
-            Hello! I'm a researcher / developer / student at
-            <strong>Your University</strong>, working in the field of
-            <strong>your discipline</strong>. Write a few sentences about
-            your background, your journey, and what drives your work.
-          </p>
-          <p>
-            My current research focuses on <strong>topic A</strong>,
-            <strong>topic B</strong>, and <strong>topic C</strong>.
-            Feel free to expand on your academic interests, recent projects,
-            or collaborations here.
-          </p>
-
-          <h2 style="margin-top: var(--space-xl);">Research Interests</h2>
-          <div class="about__interests">
-            <span class="tag">Machine Learning</span>
-            <span class="tag">Data Science</span>
-            <span class="tag">Computational Physics</span>
-            <span class="tag">Open Source</span>
-            <span class="tag">Scientific Computing</span>
-          </div>
+        <div class="about__body" id="about-content" data-src="content/about.md">
+          <!-- Loaded via markdown.js -->
         </div>
 
       </div>
     </div>
+
+    <!-- Education (injected by JS from about.md)
+    <div class="container fade-in" id="about-education" style="margin-top: var(--space-3xl);">
+    </div> -->
   </section>
 
 
   <!-- Footer (injected by JS) -->
   <div id="footer-placeholder"></div>
 
+  <!-- marked.js from CDN — lightweight markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
   <script src="js/components.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/markdown.js"></script>
 
 </body>
 

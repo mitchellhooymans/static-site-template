@@ -298,10 +298,217 @@ function observeTimelineNodes(container) {
 }
 
 
+/**
+ * loadHomeContent()
+ * ----------------
+ * Maps home.md to the hero section layout
+ */
+async function loadHomeContent(elementId) {
+  if (window.location.protocol === 'file:') return;
+  const container = document.getElementById(elementId);
+  if (!container) return;
+  const mdPath = container.getAttribute('data-src');
+  if (!mdPath) return;
+
+  try {
+    const response = await fetch(mdPath);
+    if (!response.ok) throw new Error(`Failed to load ${mdPath}`);
+    const mdText = await response.text();
+
+    if (typeof marked === 'undefined') throw new Error('marked.js missing');
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = marked.parse(mdText);
+
+    const h1 = tempDiv.querySelector('h1');
+    const h2 = tempDiv.querySelector('h2');
+    const h3 = tempDiv.querySelector('h3');
+    const paragraphs = Array.from(tempDiv.querySelectorAll('p'));
+
+    let html = '';
+    if (h1) html += `<span class="hero__badge">${h1.innerHTML}</span>\n`;
+    if (h2) html += `<h1 class="hero__title">${h2.innerHTML}</h1>\n`;
+    if (h3) html += `<p class="hero__role">${h3.innerHTML}</p>\n`;
+    paragraphs.forEach(p => {
+      html += `<p class="hero__subtitle">${p.innerHTML}</p>\n`;
+    });
+
+    // Add back the hero actions
+    html += `
+      <div class="hero__actions">
+        <a href="about.html" class="btn btn--primary">Learn More</a>
+        <a href="publications.html" class="btn btn--outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+          </svg>
+          Publications
+        </a>
+      </div>
+    `;
+
+    container.innerHTML = html;
+  } catch (err) {
+    console.error(`[markdown.js] ${err.message}`);
+  }
+}
+
+/**
+ * loadAboutContent()
+ * ----------------
+ * Maps about.md to the about page grid
+ */
+async function loadAboutContent(elementId) {
+  if (window.location.protocol === 'file:') return;
+  const container = document.getElementById(elementId);
+  if (!container) return;
+  const mdPath = container.getAttribute('data-src');
+  if (!mdPath) return;
+
+  try {
+    const response = await fetch(mdPath);
+    if (!response.ok) throw new Error(`Failed to load`);
+    const mdText = await response.text();
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = marked.parse(mdText);
+
+    const children = Array.from(tempDiv.children);
+    let bioHtml = '<h2>Who I Am</h2>';
+    let isResearch = false;
+    let researchTags = [];
+    let educationHtml = '';
+    let currentEduCard = '';
+
+    children.forEach(child => {
+      if (child.tagName === 'H2') {
+        if (child.textContent === 'Research Interests') {
+          isResearch = true;
+        } else if (child.textContent === 'Education') {
+          isResearch = false;
+        }
+      } else if (child.tagName === 'UL' && isResearch) {
+        // Collect tags
+        Array.from(child.children).forEach(li => researchTags.push(li.textContent));
+      } else if (!isResearch) {
+        // Bio or Education
+        if (child.tagName === 'P' && educationHtml === '' && currentEduCard === '') {
+          bioHtml += `<p>${child.innerHTML}</p>`;
+        } else if (child.tagName === 'H3') {
+          if (currentEduCard) educationHtml += `<div class="edu-card">${currentEduCard}</div>`;
+          currentEduCard = `<h3>${child.innerHTML}</h3>`;
+        } else if (child.tagName === 'P' && currentEduCard) {
+          // Check if strong
+          if (child.querySelector('strong')) {
+             currentEduCard += `<div class="edu-card__institution">${child.innerHTML}</div>`;
+          } else if (child.querySelector('em')) {
+             currentEduCard += `<div class="edu-card__year">${child.innerHTML}</div>`;
+          } else {
+             currentEduCard += `<p>${child.innerHTML}</p>`;
+          }
+        }
+      }
+    });
+
+    if (currentEduCard) educationHtml += `<div class="edu-card">${currentEduCard}</div>`;
+
+    let html = bioHtml;
+    if (researchTags.length > 0) {
+      html += `<h2 style="margin-top: var(--space-xl);">Research Interests</h2><div class="about__interests">`;
+      researchTags.forEach(tag => html += `<span class="tag">${tag}</span>`);
+      html += `</div>`;
+    }
+
+    container.innerHTML = html;
+
+    // Output Education block right after the about__grid, using DOM traversal in the actual page if needed,
+    // or we assume container is wrapping both. But about.html separates about__body and about__education.
+    // The easiest way is to push education to a specific element.
+    const eduContainer = document.getElementById('about-education');
+    if (eduContainer) {
+       eduContainer.innerHTML = `<h2>Education</h2>${educationHtml}`;
+    }
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/**
+ * loadContactContent()
+ * ----------------
+ * Maps contact.md to contact grid
+ */
+async function loadContactContent(elementId) {
+  if (window.location.protocol === 'file:') return;
+  const container = document.getElementById(elementId);
+  if (!container) return;
+  const mdPath = container.getAttribute('data-src');
+  if (!mdPath) return;
+
+  try {
+    const response = await fetch(mdPath);
+    if (!response.ok) throw new Error('Failed to load');
+    const mdText = await response.text();
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = marked.parse(mdText);
+
+    // Split by HR
+    let cards = [];
+    let currentCard = [];
+    Array.from(tempDiv.children).forEach(child => {
+      if (child.tagName === 'HR') {
+        if (currentCard.length) cards.push(currentCard);
+        currentCard = [];
+      } else {
+        currentCard.push(child);
+      }
+    });
+    if (currentCard.length) cards.push(currentCard);
+
+    let html = '';
+    
+    // Assign icons based on index
+    const icons = [
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>`,
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" /><path d="M9 22v-4h6v4" /><path d="M8 6h.01" /><path d="M16 6h.01" /><path d="M12 6h.01" /><path d="M12 10h.01" /><path d="M12 14h.01" /><path d="M16 10h.01" /><path d="M16 14h.01" /><path d="M8 10h.01" /><path d="M8 14h.01" /></svg>`
+    ];
+
+    cards.forEach((card, index) => {
+      const icon = icons[index % icons.length];
+      const title = card.find(c => c.tagName === 'H1' || c.tagName === 'H2');
+      const paragraphs = card.filter(c => c.tagName === 'P');
+
+      if (title) {
+         html += `
+          <div class="contact-card">
+            <div class="contact-card__icon">${icon}</div>
+            <h3>${title.textContent}</h3>
+            ${paragraphs.map(p => {
+               // Make email clickable if it contains @
+               if (p.textContent.includes('@')) {
+                 return `<a href="mailto:${p.textContent}">${p.innerHTML}</a>`;
+               }
+               return `<p>${p.innerHTML}</p>`;
+            }).join('')}
+          </div>
+         `;
+      }
+    });
+
+    container.innerHTML = html;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 /* -----------------------------------------------------------
    BOOT — Load markdown when the DOM is ready
    ----------------------------------------------------------- */
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadMarkdown('md-content');
+  if (document.getElementById('md-content')) loadMarkdown('md-content');
+  if (document.getElementById('home-content')) loadHomeContent('home-content');
+  if (document.getElementById('about-content')) loadAboutContent('about-content');
+  if (document.getElementById('contact-content')) loadContactContent('contact-content');
 });

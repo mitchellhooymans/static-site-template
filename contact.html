@@ -35,47 +35,8 @@
     <div class="container">
 
       <!-- Two-column grid: Email + Institution -->
-      <div class="contact__grid fade-in">
-
-        <!-- Email card -->
-        <div class="contact-card">
-          <div class="contact-card__icon">
-            <!-- Mail icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="4" width="20" height="16" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
-          </div>
-          <h3>Email</h3>
-          <a href="mailto:your.email@university.edu">your.email@university.edu</a>
-        </div>
-
-        <!-- Institution card -->
-        <div class="contact-card">
-          <div class="contact-card__icon">
-            <!-- Building icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="4" y="2" width="16" height="20" rx="2" />
-              <path d="M9 22v-4h6v4" />
-              <path d="M8 6h.01" />
-              <path d="M16 6h.01" />
-              <path d="M12 6h.01" />
-              <path d="M12 10h.01" />
-              <path d="M12 14h.01" />
-              <path d="M16 10h.01" />
-              <path d="M16 14h.01" />
-              <path d="M8 10h.01" />
-              <path d="M8 14h.01" />
-            </svg>
-          </div>
-          <h3>Institution</h3>
-          <p>Department of Something</p>
-          <p>Your University</p>
-          <p>City, Country</p>
-        </div>
-
+      <div class="contact__grid fade-in" id="contact-content" data-src="content/contact.md">
+         <!-- Loaded via markdown.js -->
       </div>
 
       <!-- Academic / social profile links -->
@@ -131,8 +92,12 @@
   <!-- Footer (injected by JS) -->
   <div id="footer-placeholder"></div>
 
+  <!-- marked.js from CDN — lightweight markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
   <script src="js/components.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/markdown.js"></script>
 
 </body>
 </html>
