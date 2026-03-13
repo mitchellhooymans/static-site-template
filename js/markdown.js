@@ -31,6 +31,8 @@
  *                             Must have a data-src attribute.
  */
 async function loadMarkdown(elementId) {
+  if (window.location.protocol === 'file:') return; // Stop if opened as local file
+
   const container = document.getElementById(elementId);
   if (!container) return;
 

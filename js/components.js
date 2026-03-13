@@ -110,6 +110,14 @@ function initFooter() {
    ----------------------------------------------------------- */
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Check if opened via file:// protocol
+  if (window.location.protocol === 'file:') {
+    const warning = document.createElement('div');
+    warning.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#ef4444;color:white;padding:16px;text-align:center;z-index:99999;font-family:sans-serif;box-shadow:0 4px 6px rgba(0,0,0,0.1);';
+    warning.innerHTML = '<strong>Warning:</strong> You are viewing this site by double-clicking the HTML file (file:// protocol). For security reasons, browsers block loading the navigation and footer components this way. Please use a local web server (e.g., <code style="background:rgba(0,0,0,0.2);padding:2px 6px;border-radius:4px;">npx serve</code> or VS Code Live Server) to view the site correctly.';
+    document.body.prepend(warning);
+    return; // Stop trying to fetch components
+  }
 
   // Load the navbar, then initialise its toggle behaviour
   await loadComponent('navbar-placeholder', 'components/navbar.html');
